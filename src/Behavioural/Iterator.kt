@@ -1,64 +1,81 @@
 package Behavioural
 
 fun main() {
-    val repo = BikeRepository()
+    val companyAIterator = CompanyARepository().iterator()
+    val companyBIterator = CompanyBRepository().iterator()
 
-    repo.addBike("Cervelo")
-    repo.addBike("Scott")
-    repo.addBike("Fuji")
+    companyAIterator.forEach { employee ->
+        println(employee)
+    }
+    companyBIterator.forEach { employee ->
+        println(employee)
+    }
+}
 
-    val bikeIterator = repo.iterator()
+class CompanyBRepository : Iterable<String>{
+    private var employees = arrayListOf<String>("Mohamed Mahmoud", "Ahmed Khaled", "Amira Ismael", "Omar Adel")
 
-    //while(bikeIterator.hasNext()) {
-    //	System.out.println(bikeIterator.next());
-    //}
-
-
-    //while(bikeIterator.hasNext()) {
-    //	System.out.println(bikeIterator.next());
-    //}
-    while (bikeIterator.hasNext()){
-        val bike = bikeIterator.next()
-        println(bike)
+    fun addEmployee(employee: String){
+        employees.add(employee)
     }
 
-    repo.forEach {
-        println(it)
+    //implementation of loop is internally, not exposed to the client
+    override fun iterator(): Iterator<String> {
+        return object : Iterator<String> {
+            var index = 0
+            override fun hasNext(): Boolean {
+                if (index < employees.size)
+                    return true
+                return false
+            }
+
+            override fun next(): String {
+                return employees[index++]
+            }
+
+        }
     }
 }
 
 
-class BikeRepository : Iterable<String>{
-    private var bikes = arrayOfNulls<String>(10)
+class CompanyARepository : Iterable<String>{
+    private var employees = arrayOfNulls<String>(10)
     private var index = 0
 
-    fun addBike(bike: String){
-        if(index == bikes.size){
-            var largerBikes: Array<String?>? = arrayOfNulls<String>(bikes.size +5)
-            System.arraycopy(bikes, 0, largerBikes, 0, bikes.size)
-            bikes = largerBikes!!
-            largerBikes = null
+    init {
+        addEmployee("Mohamed Ibrahim")
+        addEmployee("Malak Ragab")
+        addEmployee("Habiba Mohamed")
+    }
+
+    fun addEmployee(employee: String){
+        if(index == employees.size){
+            var largerListOfEmployees: Array<String?>? = arrayOfNulls<String>(employees.size +5)
+            System.arraycopy(employees, 0, largerListOfEmployees, 0, employees.size)
+            employees = largerListOfEmployees!!
+            largerListOfEmployees = null
         }
 
-        bikes[index] = bike
+        employees[index] = employee
         index++
     }
 
-
+    //implementation of loop is internally, not exposed to the client
     override fun iterator(): Iterator<String> {
-        val iterator = object : Iterator<String>{
+        return object : Iterator<String> {
             private var currentIndex = 0
 
             override fun hasNext(): Boolean {
-                return currentIndex < bikes.size && bikes[currentIndex] != null
+                return currentIndex < employees.size && employees[currentIndex] != null
             }
 
             override fun next(): String {
-                return bikes[currentIndex++]!!
+                return employees[currentIndex++]!!
             }
 
+            //we can add more functionality like add, remove, previous, hasPrevious
+            //we can find mentioned extra features in MutableListIterator
         }
-        return iterator
     }
 
 }
