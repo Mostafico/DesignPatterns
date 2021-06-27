@@ -1,13 +1,14 @@
 package Behavioural
 
+//Manager
 fun main() {
-    val companyAIterator = CompanyARepository().iterator()
-    val companyBIterator = CompanyBRepository().iterator()
+    val companyARepository = CompanyARepository()
+    val companyBRepository = CompanyBRepository()
 
-    companyAIterator.forEach { employee ->
+    companyARepository.forEach { employee ->
         println(employee)
     }
-    companyBIterator.forEach { employee ->
+    companyBRepository.forEach { employee ->
         println(employee)
     }
 }
